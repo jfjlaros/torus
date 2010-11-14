@@ -1,0 +1,46 @@
+\begin{thebibliography}{1}
+
+\bibitem{BG}
+I.~Borg and P.~Groenen.
+\newblock {\em Modern Multidimensional Scaling: Theory and Applications}.
+\newblock Springer, 1997.
+
+\bibitem{F}
+I.K. Fodor.
+\newblock A survey of dimension reduction techniques. technical report.
+\newblock {\em Lawrence Livermore National Laboratory}, 2002.
+\newblock
+  \newline{\small\texttt{http://www.llnl.gov/tid/lof/documents/pdf/240921.pdf}%
+}.
+
+\bibitem{AIAI}
+E.H.~de Graaf, J.N. Kok, and W.A. Kosters.
+\newblock Clustering improves the exploration of graph mining results.
+\newblock In C.~Boukis, A.~Pnevmatikakis, and L.~Polymenakos, editors, {\em
+  Proceedings of the 4th IFIP International Conference on Artificial
+  Intelligence Applications and Innovations {(AIAI07)}}, pages 13--20.
+  Springer, 2007.
+
+\bibitem{HTF}
+T.~Hastie, R.~Tibshirani, and J.~Friedman.
+\newblock {\em The Elements of Statistical Learning}.
+\newblock Springer, 2001.
+
+\bibitem{MMM}
+W.A. Kosters and J.F.J. Laros.
+\newblock Metrics for mining multisets.
+\newblock In {\em Research and Development in Intelligent Systems XXIV,
+  Proceedings of {AI-2007}}, pages 293--303. Springer, 2007.
+
+\bibitem{KW}
+W.A. Kosters and M.C.~van Wezel.
+\newblock Competitive neural networks for customer choice models, in e-commerce
+  and intelligent methods.
+\newblock {\em Studies in Fuzziness and Soft Computing}, 105:41--60, 2002.
+
+\bibitem{TSK}
+P.-N. Tan, M.~Steinbach, and V.~Kumar.
+\newblock {\em Introduction to Data Mining}.
+\newblock Addison-Wesley, 2005.
+
+\end{thebibliography}
