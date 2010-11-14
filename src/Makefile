@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -ggdb
+CFLAGS = -Wall -ggdb -pg
 LFLAGS = -lglut
 
 EXEC = torus
 MAIN = torus.c
-OBJS = input.o
+OBJS = 
 
 all: $(EXEC)
 
