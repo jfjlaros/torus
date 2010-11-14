@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -ggdb -pg
+CFLAGS = -O3 -Wall
 LFLAGS = -lglut
 
 EXEC = torus
 MAIN = torus.c
-OBJS = 
+OBJS = input.o output.o
 
 all: $(EXEC)
 
@@ -20,5 +20,5 @@ release: $(EXEC) clean
 clean:
 	rm -f $(OBJS) core
 
-realclean: clean
+distclean: clean
 	rm -f $(EXEC)

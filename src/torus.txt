@@ -1,0 +1,17 @@
+Keystrokes:
+  SPACE - Start / resume calculations.
+  e     - Toggle error display.
+  s     - Navigate down.
+  w     - Navigate up.
+  d     - Navigate left.
+  a     - Navigate right.
+  n     - Toggle names display.
+  z     - Zoom in.
+  x     - Zoom out.
+  [     - Increase the push/pull divisor (less aggressive).
+  ]     - Decrease the push/pull divisor (more aggressive).
+  r     - Restart.
+  f     - Dump data to /tmp/points.txt and /tmp/points.lbl
+  =     - Increase the multiplication factor of the distances.
+  -     - Decrease the multiplication factor of the distances.
+  ESC   - Quit.

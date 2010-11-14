@@ -4,14 +4,17 @@
 
 #include "input.h"
 
-#define NAME_LENGTH 10
+#define EPSILON 0.000000001
 #define DIMENSION 2
 
 // Global variables.
 int number;     // The number of entities.
 char **name;    // The names of the entities.
 float **matrix, // The distance matrix.
-      **point;  // The points to be displayed.
+      **point,  // The points to be displayed.
+      *error,   // The error of each point.
+      minel = 1.0,
+      maxel = 0.0;
 
 // Initialize the random genenerator on the time.
 void initrand(void) {
@@ -20,6 +23,16 @@ void initrand(void) {
   ftime(&T);
   srand(T.millitm);
 }//initrand
+
+// Initialize the points randomly around the center.
+void initpoints(void) {
+  int i,
+      j;
+
+  for (i = 0; i < number; i++)
+    for (j = 0; j < DIMENSION; j++)
+      point[i][j] = 0.5 + ((float)rand() / RAND_MAX) / 5;
+}//initpoints
 
 // Read the number of entities, their names and distances from stdin and
 // initialize the points to be displayed randomly.
@@ -47,17 +60,23 @@ void readfile(void) {
     matrix[i] = (float *)malloc(i * sizeof(float));
     for (j = 0; j < i; j++) {
       scanf("%f", &matrix[i][j]);
+      matrix[i][j] /= 2.0;
       matrix[i][j] *= matrix[i][j];                    // Square the element.
+      if (matrix[i][j] == 0.0)
+        matrix[i][j] = EPSILON;
+      if (matrix[i][j] < minel)
+        minel = matrix[i][j];
+      if (matrix[i][j] > maxel)
+        maxel = matrix[i][j];
     }//for
   }//for
+  //printf("%f %f\n", minel, maxel);
 
+  error = (float *)malloc(number * sizeof(float));     // Make the errors.
   point = (float **)malloc(number * sizeof(float *));  // Make the points.
-  for (i = 0; i < number; i++) {
+  for (i = 0; i < number; i++)
     point[i] = (float *)malloc(DIMENSION * sizeof(float));
-    for (j = 0; j < DIMENSION; j++) {
-      point[i][j] = (float)rand() / RAND_MAX;
-    }//for
-  }//for
+  initpoints();
 }//readfile
 
 // Free the allocated memory.
@@ -75,6 +94,7 @@ void cleanup(void) {
     free(name[i]);
   }//for
   free(point);
+  free(error);
   free(matrix);
   free(name);
 }//cleanup
