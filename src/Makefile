@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -O3 -Wall
-LFLAGS = -lglut
+LFLAGS = -lglut -lm -lGL
 
 EXEC = torus
 MAIN = torus.c
