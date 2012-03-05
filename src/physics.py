@@ -13,7 +13,7 @@ import numpy
 from pygame import locals, color, display, key, event, draw
 
 windowSize = numpy.array([300, 200])
-impulseResolution = 0.000001
+impulseResolution = 0.01
 friction = 0.02
 
 class matrix():
@@ -29,7 +29,8 @@ class matrix():
         
         self.M = []
         for i in range(self.numberOfParticles - 1):
-            self.M.append(map(float, handle.readline().split()))
+            self.M.append(map(lambda x: float(x) / 2.0,
+                handle.readline().split()))
     #__init__
 
     def distance(self, i, j):
@@ -47,15 +48,13 @@ class point():
     """
     """
 
-    def __init__(self, position=numpy.array([0, 0]), randomInit=False):
+    def __init__(self, position=numpy.array([0.0, 0.0]), randomInit=False):
         """
         """
         if randomInit:
-            self.position = numpy.array([random.randint(0, windowSize[0]),
-                random.randint(0, windowSize[1])])
+            self.position = numpy.array([random.random(), random.random()])
         else:
             self.position = position
-        self.floatPosition = map(float, self.position)
         self.velocity = numpy.array([0.0, 0.0])
         self.mass = 1.0
     #__init__
@@ -69,17 +68,22 @@ class point():
     def update(self):
         """
         """
-        self.floatPosition = (self.floatPosition + self.velocity) % windowSize
-        self.position = numpy.array(map(int, self.floatPosition))
+        self.position = (self.position + self.velocity) % 1.0
         self.velocity -= self.velocity * friction
     #update
+
+    def pos(self):
+        """
+        """
+        return map(int, (self.position * windowSize))
+    #pos
 #point
 
 def dist(particle1, particle2):
     """
     """
-    return ((particle1.floatPosition[0] - particle2.floatPosition[0]) ** 2 +
-        (particle1.floatPosition[1] - particle2.floatPosition[1]) ** 2)
+    return ((particle1.position[0] - particle2.position[0]) ** 2 +
+        (particle1.position[1] - particle2.position[1]) ** 2)
 #dist
 
 def input(events):
@@ -111,9 +115,9 @@ def input(events):
 def render(screen, particle):
     """
     """
-    draw.circle(screen, color.Color("black"), particle.position, 2)
+    draw.circle(screen, color.Color("black"), particle.pos(), 2)
     particle.update()
-    draw.circle(screen, color.Color("white"), particle.position, 2)
+    draw.circle(screen, color.Color("white"), particle.pos(), 2)
     display.update()
 #render
 
@@ -133,7 +137,7 @@ def physics(handle):
         inp = input(event.get())
         if inp != None:
             for particle in particles:
-                particle.impulse(impulseResolution * 10000.0 * inp)
+                particle.impulse(impulseResolution * 0.01 * inp)
 
         for i in range(distanceMatrix.numberOfParticles):
             for j in range(distanceMatrix.numberOfParticles):
