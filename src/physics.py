@@ -12,9 +12,10 @@ import numpy
 
 from pygame import locals, color, display, key, event, draw
 
-windowSize = numpy.array([300, 200])
+windowSize = numpy.array([300, 300])
 impulseResolution = 0.01
 friction = 0.02
+entropy = 0.00000001
 
 class matrix():
     """
@@ -29,7 +30,7 @@ class matrix():
         
         self.M = []
         for i in range(self.numberOfParticles - 1):
-            self.M.append(map(lambda x: float(x) / 2.0,
+            self.M.append(map(lambda x: float(x) / 4.0,
                 handle.readline().split()))
     #__init__
 
@@ -48,7 +49,7 @@ class point():
     """
     """
 
-    def __init__(self, position=numpy.array([0.0, 0.0]), randomInit=False):
+    def __init__(self, position=numpy.array([0.5, 0.5]), randomInit=False):
         """
         """
         if randomInit:
@@ -68,8 +69,10 @@ class point():
     def update(self):
         """
         """
+        displacement = numpy.array([random.random() - 0.5,
+            random.random() - 0.5])
         self.position = (self.position + self.velocity) % 1.0
-        self.velocity -= self.velocity * friction
+        self.velocity -= (self.velocity * friction) + (displacement * entropy)
     #update
 
     def pos(self):
@@ -79,11 +82,28 @@ class point():
     #pos
 #point
 
-def dist(particle1, particle2):
+def torusPosition(position1, position2):
     """
     """
-    return ((particle1.position[0] - particle2.position[0]) ** 2 +
-        (particle1.position[1] - particle2.position[1]) ** 2)
+    position = numpy.array(position2)
+
+    if position1[0] - position2[0] > 0.5:
+        position[0] += 1.0
+    if position1[0] - position2[0] < -0.5:
+        position[0] -= 1.0
+    if position1[1] - position2[1] > 0.5:
+        position[1] += 1.0
+    if position1[1] - position2[1] < -0.5:
+        position[1] -= 1.0
+
+    return position
+#torusPosition
+
+def dist(position1, position2):
+    """
+    """
+    return ((position1[0] - position2[0]) ** 2 +
+        (position1[1] - position2[1]) ** 2)
 #dist
 
 def input(events):
@@ -130,8 +150,7 @@ def physics(handle):
     key.set_repeat(10, 1)
 
     distanceMatrix = matrix(handle)
-    particles = map(lambda x: point(randomInit=True),
-        range(distanceMatrix.numberOfParticles))
+    particles = map(lambda x: point(), range(distanceMatrix.numberOfParticles))
 
     while True:
         inp = input(event.get())
@@ -143,17 +162,22 @@ def physics(handle):
             for j in range(distanceMatrix.numberOfParticles):
                 if i != j:
                     direction = 1
-                    if (dist(particles[i], particles[j]) <
+                    temp = torusPosition(particles[i].position,
+                        particles[j].position)
+                    if (dist(particles[i].position, temp) <
                         distanceMatrix.distance(i, j)):
                         direction = -1
                     particles[j].impulse(direction * impulseResolution *
-                        (particles[i].position - particles[j].position) *
-                        abs(dist(particles[i], particles[j]) -
+                        (particles[i].position - temp) *
+                        abs(dist(particles[i].position, temp) -
                         distanceMatrix.distance(i, j)))
                 #if
 
         for particle in particles:
             render(screen, particle)
+
+        sys.stdout.write("%f\r" % sum(map(lambda x: sum(abs(x.velocity)),
+            particles)))
     #while
 #physics
 
