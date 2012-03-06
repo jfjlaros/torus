@@ -30,7 +30,7 @@ class matrix():
         
         self.M = []
         for i in range(self.numberOfParticles - 1):
-            self.M.append(map(lambda x: float(x) / 4.0,
+            self.M.append(map(lambda x: float(x) / 2.0,
                 handle.readline().split()))
     #__init__
 
@@ -148,6 +148,8 @@ def physics(handle):
     display.set_caption('Test')
     screen = display.get_surface()
     key.set_repeat(10, 1)
+    reportInterval = 10
+    reportCounter = 0
 
     distanceMatrix = matrix(handle)
     particles = map(lambda x: point(), range(distanceMatrix.numberOfParticles))
@@ -176,8 +178,12 @@ def physics(handle):
         for particle in particles:
             render(screen, particle)
 
-        sys.stdout.write("%f\r" % sum(map(lambda x: sum(abs(x.velocity)),
-            particles)))
+        if not reportCounter % reportInterval:
+            sys.stdout.write("%f\r" % sum(map(lambda x: sum(abs(x.velocity)),
+                particles)))
+            sys.stdout.flush()
+        #if
+        reportCounter += 1
     #while
 #physics
 
