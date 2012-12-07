@@ -390,19 +390,20 @@ void translate(float x, float y) {
 }//translate
 
 void filedump(void) {
-  FILE *out,
-       *out2;
+  FILE *out;
+       //*out2;
   int i;
 
   out = fopen("/tmp/points.out", "w");
-  out2 = fopen("/tmp/points.lbl", "w");
+  //out2 = fopen("/tmp/points.lbl", "w");
   for (i = 0; i < number; i++) {
-    fprintf(out, "%f, %f\n", point[i][0], point[i][1]);
-    fprintf(out2, "set label \"%s\" at %f,%f font \"Symbol,3\"\n", name[i], 
-            point[i][0], point[i][1]);
+    fprintf(out, "%s\t%f\t%f\n", name[i], point[i][0], point[i][1]);
+    //fprintf(out, "%f, %f\n", point[i][0], point[i][1]);
+    //fprintf(out2, "set label \"%s\" at %f,%f font \"Symbol,3\"\n", name[i], 
+    //        point[i][0], point[i][1]);
   }//for
 
-  fclose(out2);
+  //fclose(out2);
   fclose(out);
 }//filedump
 
